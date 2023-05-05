@@ -7,15 +7,11 @@ import bisect
 app = Flask(__name__)
 app.config['DATA_DIR'] = 'data'
 
+data_dir = Path(app.config['DATA_DIR'])
+data_dir.mkdir(exist_ok=True)
+
 images_dir = Path(app.static_folder) / 'images'
 indexes = [p.stem for p in sorted(images_dir.glob('*.png'))]
-
-
-@app.before_first_request
-def before_first_request():
-    data_dir = Path(app.config['DATA_DIR'])
-    data_dir.mkdir(exist_ok=True)
-
 
 @app.route('/')
 def root():

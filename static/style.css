@@ -1,0 +1,28 @@
+body {
+  max-width: 640px;
+  margin: auto;
+}
+
+.image {
+  width: 100%;
+  height: auto;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 1rem;
+  font-weight: bold;
+}
+
+.status-area {
+  display: flex;
+  gap: 1rem;
+}
+
+body.done {
+  background-color: #fdd;
+}
+body.done #status {
+  color: red;
+}

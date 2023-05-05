@@ -29,14 +29,12 @@ fetch('data.json').then(res=>res.json()).then(data => {
 
 // Before Unload, save annotations to LocalStorage
 window.addEventListener('beforeunload', event => {
-  anno.saveSelected();
-  localStorage['annotations'] = JSON.stringify(anno.getAnnotations());
+  const data = anno.getAnnotations().filter(x=>x.id);
+  localStorage['annotations'] = JSON.stringify(data);
 });
 
 
 // Register Hotkeys
-
-
 hotkeys('d,ctrl+z,space,enter', (event, handler) => {
   switch (handler.key) {
     // d: delete selected annotation
@@ -62,22 +60,22 @@ hotkeys('d,ctrl+z,space,enter', (event, handler) => {
 
 
 // Set Clear Button
-document.querySelector('#clear').addEventListener('click', event => {
+document.querySelector('#clear').addEventListener('click', async event => {
+  await anno.cancelSelected();
   anno.clearAnnotations();
   history.push(anno.getAnnotations());
 });
 
 // Set Submit Button
-document.querySelector('#submit').addEventListener('click', event => {
-  anno.saveSelected();
-  fetch('data.json', {
+document.querySelector('#submit').addEventListener('click', async event => {
+  await anno.saveSelected();
+  await fetch('data.json', {
     method: 'PUT',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(anno.getAnnotations())
-  }).then(res => {
-    localStorage['counter'] = +(localStorage['counter']??0) + 1;
-    window.location.search = '?need';
   });
+  localStorage['counter'] = +(localStorage['counter']??0) + 1;
+  window.location.search = '?need';
 });
 
 anno.on('deleteAnnotation', (annotation) => {

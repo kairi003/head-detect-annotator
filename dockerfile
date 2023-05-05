@@ -11,6 +11,7 @@ RUN mkdir -p /var/www
 COPY . /var/www
 WORKDIR /var/www
 
+RUN python3 -m pip install -U pip
 RUN python3 -m pip install -r /var/www/requirements.txt
 
 CMD ["gunicorn", "app:app", "-b", "0.0.0.0:5000"]

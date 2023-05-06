@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% block head %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="username" content="{{username}}">
+  <title>head-detect-annotator</title>
+  <link rel="stylesheet" href="/static/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/annotorious.min.css">
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="/static/setcount.js" defer></script>
+  {% endblock %}
+</head>
+
+<body>
+  <header>
+    {% block header %}
+    <div>
+      <a href="/">home</a>
+    </div>
+    <dl class="status-area">
+      <div>
+        <dt>status:</dt>
+        <dd id="status">undone</dd>
+      </div>
+      <div>
+        <dt>counter:</dt>
+        <dd id="counter">0</dd>
+      </div>
+      <div>
+        <dt>user:</dt>
+        <dd id="username">{{username}}</dd>
+      </div>
+    </dl>
+    {% endblock %}
+  </header>
+  <main>
+    {% block main %}
+    {% endblock %}
+  </main>
+</body>
+
+</html>

@@ -1,0 +1,1 @@
+document.querySelector('#counter').textContent = +(localStorage['counter']??0);

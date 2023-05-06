@@ -1,7 +1,3 @@
-// Set Counter
-document.querySelector('#counter').textContent = +(localStorage['counter']??0);
-
-
 // Define History Stack
 const history = [];
 
@@ -13,6 +9,11 @@ const anno = Annotorious.init({
   disableEditor: true,
 });
 
+const username = document.querySelector('meta[name="username"]')?.content;
+anno.setAuthInfo({
+  id: 'http://sf.cs.it-chiba.ac.jp/' + username,
+  displayName: username
+});
 
 // Set Default Annotations from data.json or latest
 fetch('data.json').then(res=>res.json()).then(data => {
@@ -69,10 +70,14 @@ document.querySelector('#clear').addEventListener('click', async event => {
 // Set Submit Button
 document.querySelector('#submit').addEventListener('click', async event => {
   await anno.saveSelected();
+  const src = document.querySelector('#image').src;
+  const data = anno.getAnnotations();
+  data.forEach(ant => ant.target.source = src);
+  
   await fetch('data.json', {
     method: 'PUT',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify(anno.getAnnotations())
+    body: JSON.stringify(data)
   });
   localStorage['counter'] = +(localStorage['counter']??0) + 1;
   window.location.search = '?need';

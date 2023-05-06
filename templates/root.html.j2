@@ -1,0 +1,7 @@
+{% extends "base.html.j2" %}
+
+{% block main %}
+{% for idx, done in tasks %}
+<a href="{{idx}}" class="{{'done' if done else ''}}">{{idx}}</a>
+{% endfor %}
+{% endblock %}

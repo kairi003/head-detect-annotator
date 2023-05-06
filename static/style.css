@@ -8,7 +8,7 @@ body {
   height: auto;
 }
 
-.task-header {
+header {
   display: flex;
   justify-content: space-between;
   padding: 0 1rem;
@@ -19,10 +19,19 @@ body {
   display: flex;
   gap: 1rem;
 }
+.status-area>div {
+  display: flex;
+  gap: .2em;
+}
+
 
 body.done {
   background-color: #fdd;
 }
 body.done #status {
   color: red;
+}
+
+a.done {
+  color: gray;
 }

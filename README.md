@@ -5,5 +5,5 @@
 
 ```
 docker build -t head-detect-annotator . --build-arg PASSWORD=password
-docker run -p 8080:5000 -v /path/to/data:/var/www/data head-detect-annotator
+docker run -d -p 8080:5000 -v /path/to/data:/var/www/data head-detect-annotator
 ```

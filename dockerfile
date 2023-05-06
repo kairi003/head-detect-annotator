@@ -1,8 +1,10 @@
 FROM python:3.11
 
-ARG PASSWORD="password"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PIP_ROOT_USER_ACTION=ignore
+
+ARG PASSWORD="password"
+ENV PASSWORD=${PASSWORD}
 
 RUN apt-get update -y && apt-get upgrade -y && \
     apt-get install git && \

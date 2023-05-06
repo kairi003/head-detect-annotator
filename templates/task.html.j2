@@ -9,7 +9,7 @@
 
 {% block main %}
 <div id="content">
-  <img id="image" class="image" src="/static/images/{{index}}.png" width="640" height="360">
+  <img id="image" class="image" src="/static/images/{{index}}.png" alt="image" width="640" height="360">
 </div>
 
 <div class="btn-toolbar justify-content-end" role="toolbar" aria-label="Toolbar with button groups">
@@ -24,6 +24,18 @@
     <button type="button" id="submit" class="btn btn-primary">Submit</button>
   </div>
 </div>
+
+<h3>Todo</h3>
+<ul>
+  <li>Create bounding boxes for the heads and submit.</li>
+  <li><strong>INCLUDE HAIR,</strong> not only face.</li>
+  <li>Create the box as <strong>TIGHT-FITTING</strong> as possible.</li>
+</ul>
+
+<details class="sample">
+  <summary>Sample Image</summary>
+  <img class="image" src="/static/sample.png" alt="sample" width="640" height="360">
+</details>
 
 <h3>Hotkeys</h3>
 <ul>

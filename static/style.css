@@ -1,6 +1,14 @@
+html {
+  background-color: aliceblue;
+  height: 100%;
+}
+
 body {
-  max-width: 640px;
+  max-width: calc(640px + 2rem);
   margin: auto;
+  padding: 1rem;
+  background-color: white;
+  min-height: 100%;
 }
 
 .image {
@@ -11,27 +19,41 @@ body {
 header {
   display: flex;
   justify-content: space-between;
-  padding: 0 1rem;
   font-weight: bold;
 }
 
 .status-area {
   display: flex;
   gap: 1rem;
+  margin: 0;
 }
+
 .status-area>div {
   display: flex;
   gap: .2em;
 }
 
+.status-area * {
+  margin: 0;
+}
 
 body.done {
   background-color: #fdd;
 }
+
 body.done #status {
   color: red;
 }
 
 a.done {
   color: gray;
+}
+
+details.sample {
+  padding-bottom: 1rem;
+}
+
+details.sample summary {
+  font-size: 1.25rem;
+  font-weight: bold;
 }

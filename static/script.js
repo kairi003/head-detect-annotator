@@ -1,6 +1,10 @@
 // Define History Stack
 const history = [];
 
+fetch('total-progress.json')
+  .then(res => res.json())
+  .then(({content}) => document.querySelector('#total').textContent = content);
+
 
 // Create Annotorious Instance
 const anno = Annotorious.init({

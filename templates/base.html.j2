@@ -22,18 +22,15 @@
       <a href="/ranking/">ranking</a>
     </div>
     <dl class="status-area">
-      <div>
-        <dt>status:</dt>
-        <dd id="status">undone</dd>
-      </div>
-      <div>
-        <dt>counter:</dt>
-        <dd id="counter">0</dd>
-      </div>
+      {% block status_area %}      
       <div>
         <dt>user:</dt>
-        <dd id="username">{{username}}</dd>
+        <dd id="username">
+          <span>{{username}}</span>
+          (<span id="counter"></span>)
+        </dd>
       </div>
+      {% endblock %}
     </dl>
     {% endblock %}
   </header>

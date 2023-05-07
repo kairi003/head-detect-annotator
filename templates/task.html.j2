@@ -7,6 +7,17 @@
 <script src="/static/script.js" defer></script>
 {% endblock %}
 
+{% block status_area %}
+<div>
+  <dt>status:</dt>
+  <dd>
+  <span id="status" class="status">pending</span>
+  (<span id="total"></span>)
+  </dd>
+</div>
+{{ super() }}
+{% endblock %}
+
 {% block main %}
 <div id="content">
   <img id="image" class="image" src="/static/images/{{index}}.png" alt="image" width="640" height="360">

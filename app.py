@@ -86,7 +86,7 @@ def user_progress():
     username = auth.username()
     data_dir = get_data_dir(username)
     num = sum(map(bool, data_dir.iterdir()))
-    return jsonify({'type': 'user-progress', 'count': num})
+    return jsonify({'type': 'user-progress', 'content': num})
 
 
 @app.route('/ranking/', methods=['GET'])

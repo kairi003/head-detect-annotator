@@ -38,7 +38,11 @@ header {
 }
 
 body.done {
-  background-color: #fdd;
+  background-color: #dfd;
+}
+
+body:not(.done) .status {
+  color: #f00;
 }
 
 a.done {

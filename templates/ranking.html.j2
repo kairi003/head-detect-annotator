@@ -1,0 +1,17 @@
+{% extends "base.html.j2" %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="/static/ranking.css">
+{% endblock %}
+
+{% block main %}
+<ol class="ranking">
+{% for rank, name, score in ranking %}
+<li class="ranking-item {{'own' if (name == username) else ''}}" value="{{rank}}">
+  <span class="name">{{name}}</span>
+  (<span class="score">{{score}}</span>)
+</li>
+{% endfor %}
+</ol>
+{% endblock %}

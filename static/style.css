@@ -41,10 +41,6 @@ body.done {
   background-color: #fdd;
 }
 
-body.done #status {
-  color: red;
-}
-
 a.done {
   color: gray;
 }

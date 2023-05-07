@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+from dataclasses import dataclass
 import os
 import re
 import json
@@ -24,11 +25,15 @@ def get_pw(username: Optional[str]) -> Optional[str]:
         return None
     return password
 
-def get_data_dir(username: str) -> Path:
+
+def get_data_dir(username: Optional[str] = None) -> Path:
+    if username is None:
+        return Path(app.config['DATA_DIR'])
     data_dir = Path(app.config['DATA_DIR']) / username
     if not data_dir.exists():
         data_dir.mkdir(parents=True, exist_ok=True)
     return data_dir
+
 
 @app.route('/')
 @auth.login_required
@@ -65,6 +70,53 @@ def task(index: str):
         return redirect(url_for('task', index=indexes[i]))
 
     return render_template('task.html.j2', index=index, username=username)
+
+
+@app.route('/<string:index>/total-progress.json', methods=['GET'])
+@auth.login_required
+def total_progress(index: str):
+    data_dir = get_data_dir(None)
+    num = sum(1 for _ in data_dir.glob(f'./*/{index}.json'))
+    return jsonify({'type': 'total-progress', 'index': index, 'content': num})
+
+
+@app.route('/user-progress.json', methods=['GET'])
+@auth.login_required
+def user_progress():
+    username = auth.username()
+    data_dir = get_data_dir(username)
+    num = sum(map(bool, data_dir.iterdir()))
+    return jsonify({'type': 'user-progress', 'count': num})
+
+
+@app.route('/ranking/', methods=['GET'])
+@auth.login_required
+def ranking():
+    username = auth.username()
+    data_dir = get_data_dir(None)
+
+    @dataclass(order=True)
+    class User:
+        score: int
+        name: str
+
+        def __init__(self, dir: Path):
+            self.name = dir.name
+            self.score = sum(1 for _ in dir.iterdir())
+
+    def generate_ranking(sorted_users: list[User]):
+        rank = 0
+        pre_score = None
+        for idx, user in enumerate(sorted_users):
+            if user.score != pre_score:
+                rank = idx + 1
+            yield rank, user.name, user.score
+            pre_score = user.score
+
+    sorted_users = sorted(map(User, data_dir.iterdir()), reverse=True)
+    ranking_iter = generate_ranking(sorted_users)
+
+    return render_template('ranking.html.j2', ranking=ranking_iter, username=username)
 
 
 @app.route('/<string:index>/data.json', methods=['GET', 'PUT'])

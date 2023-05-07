@@ -1,0 +1,18 @@
+.ranking {
+  font-size: 1.2rem;
+}
+.ranking-item .name {
+  font-weight: bold;
+}
+.ranking-item:nth-child(-n+3) {
+  font-size: 1.5em;
+}
+.ranking-item:nth-child(1) {
+  font-size: 2rem;
+}
+.ranking-item:nth-child(1)::before {
+  content: "👑";
+}
+.own {
+  color: red;
+}

@@ -18,4 +18,7 @@ WORKDIR /var/www
 RUN python3 -m pip install -U pip
 RUN python3 -m pip install -r /var/www/requirements.txt
 
-CMD ["gunicorn", "app:app", "-b", "0.0.0.0:5000"]
+ENV GUNICORN_WORKERS=4
+ENV GUNICORN_THREADS=2
+
+CMD ["gunicorn", "app:app", "-b", "0.0.0.0:5000", "-k", "gevent"]

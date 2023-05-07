@@ -7,6 +7,9 @@ services:
       dockerfile: ./Dockerfile
       args:
         - PASSWORD=password
+    environment:
+      - GUNICORN_WORKERS=4
+      - GUNICORN_THREADS=2
     ports:
       - 8080:5000
     volumes:

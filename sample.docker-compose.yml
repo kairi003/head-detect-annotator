@@ -8,8 +8,8 @@ services:
       args:
         - PASSWORD=password
     environment:
-      - GUNICORN_WORKERS=4
-      - GUNICORN_THREADS=2
+      - WORKERS=4
+      - THREADS=2
     ports:
       - 8080:5000
     volumes:

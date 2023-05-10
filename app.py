@@ -4,6 +4,7 @@ import os
 import re
 import json
 import bisect
+import random
 from pathlib import Path
 from typing import Optional
 from flask import Flask, render_template, request, redirect, url_for, jsonify
@@ -49,8 +50,18 @@ def root():
 def task(index: str):
     username = auth.username()
     images_dir = Path(app.static_folder) / 'images'
+    data_dir = get_data_dir(username)
+
+    if index == 'random':
+        candidate = [idx for idx in indexes if not (data_dir / f'{idx}.json').exists()]
+        if len(candidate) == 0:
+            return redirect(url_for('root'))
+        idx = random.choice(candidate)
+        return redirect(url_for('task', index=idx))
+
     if not (images_dir / index).with_suffix('.png').exists():
         return '', 404
+        
 
     if len(request.args) > 0:
         i = bisect.bisect_left(indexes, index)
@@ -60,7 +71,6 @@ def task(index: str):
         elif 'next' in request.args:
             i = min(n-1, i+1)
         elif 'need' in request.args:
-            data_dir = get_data_dir(username)
             for _ in range(n):
                 i = (i + 1) % n
                 if not (data_dir / f'{indexes[i]}.json').exists():

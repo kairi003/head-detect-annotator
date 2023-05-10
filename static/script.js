@@ -84,7 +84,7 @@ document.querySelector('#submit').addEventListener('click', async event => {
     body: JSON.stringify(data)
   });
   localStorage['counter'] = +(localStorage['counter']??0) + 1;
-  window.location.search = '?need';
+  window.location.search = '?next';
 });
 
 anno.on('deleteAnnotation', (annotation) => {

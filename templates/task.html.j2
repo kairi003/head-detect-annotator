@@ -1,5 +1,7 @@
 {% extends "base.html.j2" %}
 
+{% block title %}{{ super() }} - {{index}}{% endblock %}
+
 {% block head %}
 {{ super() }}
 <script src="/static/annotorious.min.js" defer></script>
@@ -19,6 +21,7 @@
 {% endblock %}
 
 {% block main %}
+<h2>{{index}}</h2>
 <div id="content">
   <img id="image" class="image" src="/static/images/{{index}}.png" alt="image" width="640" height="360">
 </div>

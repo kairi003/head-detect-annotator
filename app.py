@@ -44,6 +44,9 @@ def root():
     tasks = ((idx, (data_dir / f'{idx}.json').exists()) for idx in indexes)
     return render_template('root.html.j2', tasks=tasks, username=username)
 
+@app.route('/favicon.ico/')
+def favicon():
+    return '', 404
 
 @app.route('/<string:index>/')
 @auth.login_required

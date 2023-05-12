@@ -15,8 +15,8 @@ app.config['DATA_DIR'] = os.environ.get('DATA_DIR', 'data')
 app.config['SECRET_KEY'] = password = os.environ.get('PASSWORD', '')
 auth = HTTPDigestAuth()
 
-images_dir = Path(app.static_folder) / 'images'
-indexes = [p.stem for p in sorted(images_dir.glob('*.png'))]
+IMAGE_DIR = Path(app.static_folder) / 'images'
+INDEXES = [p.stem for p in sorted(IMAGE_DIR.glob('*.png'))]
 
 
 @auth.get_password
@@ -41,7 +41,7 @@ def get_data_dir(username: Optional[str] = None) -> Path:
 def root():
     username = auth.username()
     data_dir = get_data_dir(username)
-    tasks = ((idx, (data_dir / f'{idx}.json').exists()) for idx in indexes)
+    tasks = ((idx, (data_dir / f'{idx}.json').exists()) for idx in INDEXES)
     return render_template('root.html.j2', tasks=tasks, username=username)
 
 @app.route('/favicon.ico/')
@@ -52,23 +52,22 @@ def favicon():
 @auth.login_required
 def task(index: str):
     username = auth.username()
-    images_dir = Path(app.static_folder) / 'images'
     data_dir = get_data_dir(username)
 
     if index == 'random':
-        candidate = [idx for idx in indexes if not (data_dir / f'{idx}.json').exists()]
+        candidate = [idx for idx in INDEXES if not (data_dir / f'{idx}.json').exists()]
         if len(candidate) == 0:
             return redirect(url_for('root'))
         idx = random.choice(candidate)
         return redirect(url_for('task', index=idx))
 
-    if not (images_dir / index).with_suffix('.png').exists():
+    if not (IMAGE_DIR / index).with_suffix('.png').exists():
         return '', 404
         
 
     if len(request.args) > 0:
-        i = bisect.bisect_left(indexes, index)
-        n = len(indexes)
+        i = bisect.bisect_left(INDEXES, index)
+        n = len(INDEXES)
         if 'prev' in request.args:
             i = max(0, i-1)
         elif 'next' in request.args:
@@ -76,11 +75,11 @@ def task(index: str):
         elif 'need' in request.args:
             for _ in range(n):
                 i = (i + 1) % n
-                if not (data_dir / f'{indexes[i]}.json').exists():
+                if not (data_dir / f'{INDEXES[i]}.json').exists():
                     break
             else:
                 return redirect(url_for('root'))
-        return redirect(url_for('task', index=indexes[i]))
+        return redirect(url_for('task', index=INDEXES[i]))
 
     return render_template('task.html.j2', index=index, username=username)
 

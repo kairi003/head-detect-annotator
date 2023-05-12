@@ -24,6 +24,7 @@ fetch('data.json').then(res=>res.json()).then(data => {
   anno.setAnnotations(data);
   document.body.classList.add('done');
   document.querySelector('#status').textContent = 'done';
+  document.querySelector('#submit').textContent = 'resubmit';
   history.push(data);
 }).catch(err => {
   const data = JSON.parse(localStorage['annotations'] ?? '[]');
@@ -40,7 +41,7 @@ window.addEventListener('beforeunload', event => {
 
 
 // Register Hotkeys
-hotkeys('d,ctrl+z,space,enter', (event, handler) => {
+hotkeys('d,q,e,ctrl+z,space,enter', (event, handler) => {
   switch (handler.key) {
     // d: delete selected annotation
     case 'd':
@@ -48,6 +49,14 @@ hotkeys('d,ctrl+z,space,enter', (event, handler) => {
       history.push(anno.getAnnotations());
       break;
     
+    case 'q':
+      window.location.search = '?prev';
+      break;
+
+    case 'e':
+      window.location.search = '?next';
+      break;
+
     // ctrl+z: undo
     case 'ctrl+z':
       if (history.length > 1) {
@@ -84,8 +93,11 @@ document.querySelector('#submit').addEventListener('click', async event => {
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(data)
   });
-  localStorage['counter'] = +(localStorage['counter']??0) + 1;
-  window.location.search = '?next';
+  if (document.body.classList.contains('done')) {
+    window.location.reload();
+  } else {
+    window.location.search = '?next';
+  }
 });
 
 anno.on('deleteAnnotation', (annotation) => {

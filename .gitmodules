@@ -1,0 +1,3 @@
+[submodule "static/images"]
+	path = static/images
+	url = https://alpha.sf.cs.it-chiba.ac.jp/gitbucket/git/nagairyusuke/head-detect-annotator-images.git

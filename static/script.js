@@ -58,6 +58,7 @@ hotkeys('d,ctrl+z,space,enter', (event, handler) => {
     
     case 'space':
     case 'enter':
+      event.preventDefault();
       document.querySelector('#submit').click();
       break
   }

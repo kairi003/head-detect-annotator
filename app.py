@@ -9,10 +9,11 @@ from pathlib import Path
 from typing import Optional
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_httpauth import HTTPDigestAuth
+import imsize
 
 app = Flask(__name__)
 app.config['DATA_DIR'] = os.environ.get('DATA_DIR', 'data')
-app.config['SECRET_KEY'] = password = os.environ.get('PASSWORD', '')
+app.config['SECRET_KEY'] = password = os.environ.get('PASSWORD', 'password')
 auth = HTTPDigestAuth()
 
 IMAGE_DIR = Path(app.static_folder) / 'images'
@@ -61,9 +62,13 @@ def task(index: str):
         idx = random.choice(candidate)
         return redirect(url_for('task', index=idx))
 
-    if not (IMAGE_DIR / index).with_suffix('.png').exists():
+    im_path = (IMAGE_DIR / index).with_suffix('.png')
+    if not im_path.exists():
         return '', 404
-        
+    
+    im_info: imsize.ImageInfo = imsize.read(im_path)
+    im_width = im_info.width
+    im_height = im_info.height
 
     if len(request.args) > 0:
         i = bisect.bisect_left(INDEXES, index)
@@ -81,7 +86,7 @@ def task(index: str):
                 return redirect(url_for('root'))
         return redirect(url_for('task', index=INDEXES[i]))
 
-    return render_template('task.html.j2', index=index, username=username)
+    return render_template('task.html.j2', index=index, username=username, imwidth=im_width, imheight=im_height)
 
 
 @app.route('/<string:index>/total-progress.json', methods=['GET'])
